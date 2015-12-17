@@ -24,7 +24,7 @@ import android.net.NetworkInfo;
 import com.easemob.chat.EMMessage;
 import com.easemob.chat.TextMessageBody;
 import com.easemob.chatuidemo.Constant;
-import com.easemob.chatuidemo.R;
+import com.enterpriseIM.R;
 import com.easemob.util.EMLog;
 
 public class CommonUtils {

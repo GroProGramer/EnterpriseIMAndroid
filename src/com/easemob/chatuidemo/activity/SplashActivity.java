@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMGroupManager;
 import com.easemob.chatuidemo.DemoHXSDKHelper;
-import com.easemob.chatuidemo.R;
+import com.enterpriseIM.R;
 
 /**
  * 开屏页

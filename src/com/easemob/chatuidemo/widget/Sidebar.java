@@ -26,7 +26,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.easemob.applib.utils.HXPreferenceUtils;
-import com.easemob.chatuidemo.R;
+import com.enterpriseIM.R;
 import com.easemob.chatuidemo.adapter.ContactAdapter;
 import com.easemob.util.DensityUtil;
 

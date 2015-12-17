@@ -8,7 +8,7 @@ import android.widget.TextView;
 import com.easemob.applib.controller.HXSDKHelper;
 import com.easemob.chatuidemo.DemoHXSDKHelper;
 import com.easemob.chatuidemo.UserProfileManager;
-import com.easemob.chatuidemo.R;
+import com.enterpriseIM.R;
 import com.easemob.chatuidemo.domain.User;
 import com.squareup.picasso.Picasso;
 

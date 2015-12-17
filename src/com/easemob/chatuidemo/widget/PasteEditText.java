@@ -24,7 +24,7 @@ import android.util.AttributeSet;
 import android.widget.EditText;
 import android.widget.TextView.BufferType;
 
-import com.easemob.chatuidemo.R;
+import com.enterpriseIM.R;
 import com.easemob.chatuidemo.activity.AlertDialog;
 import com.easemob.chatuidemo.activity.ChatActivity;
 import com.easemob.chatuidemo.utils.SmileUtils;

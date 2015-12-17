@@ -16,7 +16,7 @@ package com.easemob.chatuidemo.activity;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.easemob.chatuidemo.R;
+import com.enterpriseIM.R;
 import com.easemob.chatuidemo.domain.User;
 
 public class ForwardMessageActivity extends PickContactNoCheckboxActivity {

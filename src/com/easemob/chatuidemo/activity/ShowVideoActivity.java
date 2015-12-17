@@ -18,7 +18,7 @@ import android.widget.RelativeLayout;
 import com.easemob.EMCallBack;
 import com.easemob.chat.EMChatConfig;
 import com.easemob.chat.EMChatManager;
-import com.easemob.chatuidemo.R;
+import com.enterpriseIM.R;
 import com.easemob.cloud.CloudOperationCallback;
 import com.easemob.cloud.HttpFileManager;
 import com.easemob.util.EMLog;

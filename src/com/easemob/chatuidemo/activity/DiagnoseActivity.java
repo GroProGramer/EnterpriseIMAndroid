@@ -13,7 +13,7 @@ import android.widget.Toast;
 
 import com.easemob.EMCallBack;
 import com.easemob.chat.EMChat;
-import com.easemob.chatuidemo.R;
+import com.enterpriseIM.R;
 import com.easemob.util.EMLog;
 
 /**

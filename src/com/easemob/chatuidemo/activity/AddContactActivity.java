@@ -31,7 +31,7 @@ import com.easemob.applib.controller.HXSDKHelper;
 import com.easemob.chat.EMContactManager;
 import com.easemob.chatuidemo.DemoApplication;
 import com.easemob.chatuidemo.DemoHXSDKHelper;
-import com.easemob.chatuidemo.R;
+import com.enterpriseIM.R;
 
 public class AddContactActivity extends BaseActivity{
 	private EditText editText;

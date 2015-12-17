@@ -27,7 +27,7 @@ import android.widget.Toast;
 
 import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMGroupManager;
-import com.easemob.chatuidemo.R;
+import com.enterpriseIM.R;
 import com.easemob.exceptions.EaseMobException;
 
 public class NewGroupActivity extends BaseActivity {

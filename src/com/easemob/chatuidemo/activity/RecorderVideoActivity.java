@@ -51,7 +51,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
-import com.easemob.chatuidemo.R;
+import com.enterpriseIM.R;
 import com.easemob.chatuidemo.utils.CommonUtils;
 import com.easemob.chatuidemo.video.util.Utils;
 import com.easemob.util.EMLog;

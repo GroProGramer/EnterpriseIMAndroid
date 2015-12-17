@@ -53,6 +53,7 @@ import com.easemob.chatuidemo.receiver.CallReceiver;
 import com.easemob.chatuidemo.utils.CommonUtils;
 import com.easemob.util.EMLog;
 import com.easemob.util.EasyUtils;
+import com.enterpriseIM.R;
 
 /**
  * Demo UI HX SDK helper class which subclass HXSDKHelper

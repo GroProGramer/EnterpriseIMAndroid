@@ -31,8 +31,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.easemob.chatuidemo.BuildConfig;
-import com.easemob.chatuidemo.R;
+import com.enterpriseIM.BuildConfig;
+import com.enterpriseIM.R;
 import com.easemob.chatuidemo.domain.VideoEntity;
 import com.easemob.chatuidemo.video.util.ImageCache;
 import com.easemob.chatuidemo.video.util.ImageResizer;

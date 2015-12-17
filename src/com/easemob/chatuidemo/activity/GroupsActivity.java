@@ -36,7 +36,7 @@ import com.easemob.applib.utils.HXPreferenceUtils;
 import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMGroup;
 import com.easemob.chat.EMGroupManager;
-import com.easemob.chatuidemo.R;
+import com.enterpriseIM.R;
 import com.easemob.chatuidemo.adapter.GroupAdapter;
 import com.easemob.exceptions.EaseMobException;
 import com.easemob.util.EMLog;

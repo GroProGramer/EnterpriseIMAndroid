@@ -24,7 +24,7 @@ import android.text.Spannable;
 import android.text.Spannable.Factory;
 import android.text.style.ImageSpan;
 
-import com.easemob.chatuidemo.R;
+import com.enterpriseIM.R;
 
 public class SmileUtils {
 	public static final String ee_1 = "[):]";

@@ -5,7 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.util.Log;
 
-import com.easemob.chatuidemo.BuildConfig;
+import com.enterpriseIM.BuildConfig;
 
 public class RecyclingBitmapDrawable extends BitmapDrawable {
 	static final String TAG = "CountingBitmapDrawable";

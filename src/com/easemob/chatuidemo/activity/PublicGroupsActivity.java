@@ -46,7 +46,7 @@ import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMCursorResult;
 import com.easemob.chat.EMGroupInfo;
 import com.easemob.chat.EMGroupManager;
-import com.easemob.chatuidemo.R;
+import com.enterpriseIM.R;
 import com.easemob.exceptions.EaseMobException;
 import com.easemob.util.NetUtils;
 

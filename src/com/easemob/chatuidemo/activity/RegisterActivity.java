@@ -23,7 +23,7 @@ import android.widget.Toast;
 import com.easemob.EMError;
 import com.easemob.chat.EMChatManager;
 import com.easemob.chatuidemo.DemoApplication;
-import com.easemob.chatuidemo.R;
+import com.enterpriseIM.R;
 import com.easemob.exceptions.EaseMobException;
 
 /**

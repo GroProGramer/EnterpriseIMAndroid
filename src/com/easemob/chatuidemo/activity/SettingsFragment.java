@@ -38,7 +38,7 @@ import com.easemob.chatuidemo.Constant;
 import com.easemob.chatuidemo.DemoApplication;
 import com.easemob.chatuidemo.DemoHXSDKHelper;
 import com.easemob.chatuidemo.DemoHXSDKModel;
-import com.easemob.chatuidemo.R;
+import com.enterpriseIM.R;
 
 /**
  * 设置界面

@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMGroupManager;
-import com.easemob.chatuidemo.R;
+import com.enterpriseIM.R;
 import com.easemob.exceptions.EaseMobException;
 
 import android.content.Context;
