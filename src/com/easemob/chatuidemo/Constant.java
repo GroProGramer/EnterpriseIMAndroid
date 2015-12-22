@@ -22,4 +22,7 @@ public class Constant {
 	public static final String ACCOUNT_REMOVED = "account_removed";
 	public static final String CHAT_ROBOT = "item_robots";
 	public static final String MESSAGE_ATTR_ROBOT_MSGTYPE = "msgtype";
+	public static final boolean registerSuccess=true;
+    public static final boolean registerFailed=false;
+    public static final String registerUrl="http://10.10.117.6:8080/EnterpriseIMServer/register";
 }

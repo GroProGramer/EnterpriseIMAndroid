@@ -13,6 +13,16 @@
  */
 package com.easemob.chatuidemo.activity;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+
+import wyj.util.Constants;
+import wyj.util.RegisterUtil;
+import wyj.util.RegisterUtil.RegisterListener;
+
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -30,10 +40,11 @@ import com.easemob.exceptions.EaseMobException;
  * 注册页
  * 
  */
-public class RegisterActivity extends BaseActivity {
+public class RegisterActivity extends BaseActivity{
 	private EditText userNameEditText;
 	private EditText passwordEditText;
 	private EditText confirmPwdEditText;
+	//ProgressDialog pd = new ProgressDialog(this);
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +88,43 @@ public class RegisterActivity extends BaseActivity {
 
 			new Thread(new Runnable() {
 				public void run() {
-					try {
+				    
+				    List<NameValuePair> params=new ArrayList<NameValuePair>();
+                    params.add(new BasicNameValuePair("user_id",username));
+                    params.add(new BasicNameValuePair("password",pwd));
+                    RegisterUtil.post(Constants.registerUrl, params, new RegisterListener(){
+
+                        @Override
+                        public void registedSucess(String response) {
+                            // TODO Auto-generated method stub
+                            runOnUiThread(new Runnable() {
+                                public void run() {
+                                    if (!RegisterActivity.this.isFinishing())
+                                        pd.dismiss();
+                                    // 保存用户名
+                                    DemoApplication.getInstance().setUserName(username);
+                                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.Registered_successfully), 0).show();
+                                    finish();
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void registedFailed(String response) {
+                            // TODO Auto-generated method stub
+                            runOnUiThread(new Runnable() {
+                                public void run() {
+                                    if (!RegisterActivity.this.isFinishing())
+                                        pd.dismiss();
+                                    
+                                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.Registration_failed), 0).show();
+                                    finish();
+                                }
+                            });
+                        }
+                        
+                    });                          
+					/*try {
 						// 调用sdk注册方法
 						EMChatManager.getInstance().createAccountOnServer(username, pwd);
 						runOnUiThread(new Runnable() {
@@ -109,7 +156,7 @@ public class RegisterActivity extends BaseActivity {
 								}
 							}
 						});
-					}
+					}*/
 				}
 			}).start();
 
@@ -119,5 +166,7 @@ public class RegisterActivity extends BaseActivity {
 	public void back(View view) {
 		finish();
 	}
+
+    
 
 }

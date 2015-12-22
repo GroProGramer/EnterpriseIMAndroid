@@ -17,7 +17,6 @@ import android.app.Application;
 import android.content.Context;
 
 import com.easemob.EMCallBack;
-import com.easemob.chat.EMChatManager;
 
 public class DemoApplication extends Application {
 
