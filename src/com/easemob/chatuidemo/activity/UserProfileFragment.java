@@ -1,5 +1,7 @@
 package com.easemob.chatuidemo.activity;
 
+import java.io.ByteArrayOutputStream;
+
 import com.easemob.EMValueCallBack;
 import com.easemob.applib.controller.HXSDKHelper;
 import com.easemob.chat.EMChatManager;
@@ -7,6 +9,7 @@ import com.easemob.chatuidemo.DemoHXSDKHelper;
 import com.easemob.chatuidemo.domain.User;
 import com.easemob.chatuidemo.utils.UserUtils;
 import com.enterpriseIM.R;
+import com.enterpriseIM.SettingActivity;
 import com.squareup.picasso.Picasso;
 
 import android.app.AlertDialog;
@@ -14,6 +17,10 @@ import android.app.ProgressDialog;
 import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
@@ -23,6 +30,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -39,12 +47,17 @@ public class UserProfileFragment extends Fragment implements OnClickListener{
     private TextView tvUsername;
     private ProgressDialog dialog;
     private RelativeLayout rlNickName;    
+    private RelativeLayout rlMoreSettings;
 
     @Override
     public View onCreateView(LayoutInflater inflater,
             @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         // TODO Auto-generated method stub
-        return inflater.inflate(R.layout.activity_user_profile, container, false);
+        View v;
+        v=inflater.inflate(R.layout.activity_user_profile, container, false);
+        initView(v);
+        initListener();
+        return v;
     }
     
     
@@ -53,29 +66,31 @@ public class UserProfileFragment extends Fragment implements OnClickListener{
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         // TODO Auto-generated method stub
         super.onActivityCreated(savedInstanceState);
-        
+       
     }
 
 
 
-    private void initView() {
-        headAvatar = (ImageView) getView().findViewById(R.id.user_head_avatar);
-        headPhotoUpdate = (ImageView) getView().findViewById(R.id.user_head_headphoto_update);
-        tvUsername = (TextView) getView().findViewById(R.id.user_username);
-        tvNickName = (TextView) getView().findViewById(R.id.user_nickname);
-        rlNickName = (RelativeLayout) getView().findViewById(R.id.rl_nickname);
-        iconRightArrow = (ImageView) getView().findViewById(R.id.ic_right_arrow);
+    private void initView(View view) {
+        headAvatar = (ImageView) view.findViewById(R.id.user_head_avatar);
+        headPhotoUpdate = (ImageView) view.findViewById(R.id.user_head_headphoto_update);
+        tvUsername = (TextView) view.findViewById(R.id.user_username);
+        tvNickName = (TextView) view.findViewById(R.id.user_nickname);
+        rlNickName = (RelativeLayout) view.findViewById(R.id.rl_nickname);
+        iconRightArrow = (ImageView) view.findViewById(R.id.ic_right_arrow);
+        rlMoreSettings=(RelativeLayout) view.findViewById(R.id.rl_moresettings);
     }
 
     private void initListener() {
         Intent intent = getActivity().getIntent();
         String username = intent.getStringExtra("username");
-        boolean enableUpdate = intent.getBooleanExtra("setting", false);
+        boolean enableUpdate = intent.getBooleanExtra("setting", true);
         if (enableUpdate) {
             headPhotoUpdate.setVisibility(View.VISIBLE);
             iconRightArrow.setVisibility(View.VISIBLE);
             rlNickName.setOnClickListener(this);
             headAvatar.setOnClickListener(this);
+            rlMoreSettings.setOnClickListener(this);
         } else {
             headPhotoUpdate.setVisibility(View.GONE);
             iconRightArrow.setVisibility(View.INVISIBLE);
@@ -177,11 +192,115 @@ public class UserProfileFragment extends Fragment implements OnClickListener{
         }).start();
     }
 
+    public void startPhotoZoom(Uri uri) {
+        Intent intent = new Intent("com.android.camera.action.CROP");
+        intent.setDataAndType(uri, "image/*");
+        intent.putExtra("crop", true);
+        intent.putExtra("aspectX", 1);
+        intent.putExtra("aspectY", 1);
+        intent.putExtra("outputX", 300);
+        intent.putExtra("outputY", 300);
+        intent.putExtra("return-data", true);
+        intent.putExtra("noFaceDetection", true);
+        startActivityForResult(intent, REQUESTCODE_CUTTING);
+    }
+    
+    private void setPicToView(Intent picdata) {
+        Bundle extras = picdata.getExtras();
+        if (extras != null) {
+            Bitmap photo = extras.getParcelable("data");
+            Drawable drawable = new BitmapDrawable(getResources(), photo);
+            headAvatar.setImageDrawable(drawable);
+            uploadUserAvatar(Bitmap2Bytes(photo));
+        }
+
+    }
+    
+    private void uploadUserAvatar(final byte[] data) {
+        dialog = ProgressDialog.show(getActivity(), getString(R.string.dl_update_photo), getString(R.string.dl_waiting));
+        new Thread(new Runnable() {
+
+            @Override
+            public void run() {
+                final String avatarUrl = ((DemoHXSDKHelper)HXSDKHelper.getInstance()).getUserProfileManager().uploadUserAvatar(data);
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        dialog.dismiss();
+                        if (avatarUrl != null) {
+                            Toast.makeText(getActivity(), getString(R.string.toast_updatephoto_success),
+                                    Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(getActivity(), getString(R.string.toast_updatephoto_fail),
+                                    Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+                });
+
+            }
+        }).start();
+
+        dialog.show();
+    }
+    public byte[] Bitmap2Bytes(Bitmap bm){
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bm.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        return baos.toByteArray();
+    }
 
     @Override
-    public void onClick(View arg0) {
+    public void onClick(View v) {
         // TODO Auto-generated method stub
-        
+        switch (v.getId()) {
+        case R.id.user_head_avatar:
+            uploadHeadPhoto();
+            break;
+        case R.id.rl_nickname:
+            final EditText editText = new EditText(getActivity());
+            new AlertDialog.Builder(getActivity()).setTitle(R.string.setting_nickname).setIcon(android.R.drawable.ic_dialog_info).setView(editText)
+                    .setPositiveButton(R.string.dl_ok, new DialogInterface.OnClickListener() {
+
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            String nickString = editText.getText().toString();
+                            if (TextUtils.isEmpty(nickString)) {
+                                Toast.makeText(getActivity(), getString(R.string.toast_nick_not_isnull), Toast.LENGTH_SHORT).show();
+                                return;
+                            }
+                            updateRemoteNick(nickString);
+                        }
+                    }).setNegativeButton(R.string.dl_cancel, null).show();
+            break;
+        case R.id.rl_moresettings:
+            startActivity(new Intent(getActivity(), SettingActivity.class));
+            break;
+        default:
+            break;
+        }
+    }
+
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // TODO Auto-generated method stub
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+        case REQUESTCODE_PICK:
+            if (data == null || data.getData() == null) {
+                return;
+            }
+            startPhotoZoom(data.getData());
+            break;
+        case REQUESTCODE_CUTTING:
+            if (data != null) {
+                setPicToView(data);
+            }
+            break;
+        default:
+            break;
+        }
     }
 
     

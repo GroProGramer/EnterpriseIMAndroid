@@ -70,6 +70,7 @@ public class MainActivity extends BaseActivity implements EMEventListener {
 	// private ChatHistoryFragment chatHistoryFragment;
 	private ChatAllHistoryFragment chatHistoryFragment;
 	private SettingsFragment settingFragment;
+	private UserProfileFragment userProfileFragment;
 	private Fragment[] fragments;
 	private int index;
 	// 当前fragment的index
@@ -128,7 +129,8 @@ public class MainActivity extends BaseActivity implements EMEventListener {
 		chatHistoryFragment = new ChatAllHistoryFragment();
 		contactListFragment = new ContactlistFragment();
 		settingFragment = new SettingsFragment();
-		fragments = new Fragment[] { chatHistoryFragment, contactListFragment, settingFragment };
+		userProfileFragment=new UserProfileFragment();
+		fragments = new Fragment[] { chatHistoryFragment, contactListFragment, userProfileFragment };
 		// 添加显示第一个fragment
 		getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, chatHistoryFragment)
 				.add(R.id.fragment_container, contactListFragment).hide(contactListFragment).show(chatHistoryFragment)
@@ -215,12 +217,13 @@ public class MainActivity extends BaseActivity implements EMEventListener {
                 userlist.put(Constant.GROUP_USERNAME, groupUser);
                 
                  // 添加"聊天室"
-                User chatRoomItem = new User();
+                /*User chatRoomItem = new User();
                 String strChatRoom = context.getString(R.string.chat_room);
                 chatRoomItem.setUsername(Constant.CHAT_ROOM);
                 chatRoomItem.setNick(strChatRoom);
                 chatRoomItem.setHeader("");
                 userlist.put(Constant.CHAT_ROOM, chatRoomItem);
+               
                 
                 // 添加"Robot"
         		User robotUser = new User();
@@ -228,7 +231,7 @@ public class MainActivity extends BaseActivity implements EMEventListener {
         		robotUser.setUsername(Constant.CHAT_ROBOT);
         		robotUser.setNick(strRobot);
         		robotUser.setHeader("");
-        		userlist.put(Constant.CHAT_ROBOT, robotUser);
+        		userlist.put(Constant.CHAT_ROBOT, robotUser);*/
         		
                  // 存入内存
                 ((DemoHXSDKHelper)HXSDKHelper.getInstance()).setContactList(userlist);
