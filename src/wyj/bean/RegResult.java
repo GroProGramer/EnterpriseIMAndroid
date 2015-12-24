@@ -5,25 +5,24 @@ import wyj.util.Constants;
 
 public class RegResult {
 
-	boolean regstatus;
-	User newuser;
-	public RegResult(User newuser){
-		this.newuser=newuser;
-		if(newuser==null) regstatus=Constants.registerFailed;
-		else regstatus=Constants.registerSuccess;
-	}
-    public boolean getRegstatus() {
+RegStatus regstatus;
+    
+    
+    public RegStatus getRegstatus() {
         return regstatus;
     }
-    public void setRegstatus(boolean regstatus) {
+
+
+    public void setRegstatus(RegStatus regstatus) {
         this.regstatus = regstatus;
     }
-    public User getNewuser() {
-        return newuser;
+
+
+    public enum RegStatus{
+        RegSucess,
+        UserHasExisted,
+        LocalDatabaseWrong,
+        HXDatabaseWrong
     }
-    public void setNewuser(User newuser) {
-        this.newuser = newuser;
-    }
-	
 	
 }

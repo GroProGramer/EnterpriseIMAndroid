@@ -19,6 +19,7 @@ import java.util.List;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
+import wyj.bean.RegResult;
 import wyj.util.Constants;
 import wyj.util.RegisterUtil;
 import wyj.util.RegisterUtil.RegisterListener;
@@ -92,10 +93,10 @@ public class RegisterActivity extends BaseActivity{
 				    List<NameValuePair> params=new ArrayList<NameValuePair>();
                     params.add(new BasicNameValuePair("user_id",username));
                     params.add(new BasicNameValuePair("password",pwd));
-                    RegisterUtil.post(Constants.registerUrl, params, new RegisterListener(){
+                    RegisterUtil.register(Constants.registerUrl, params, new RegisterListener(){
 
                         @Override
-                        public void registedSucess(String response) {
+                        public void registedSucess(RegResult response) {
                             // TODO Auto-generated method stub
                             runOnUiThread(new Runnable() {
                                 public void run() {
@@ -110,7 +111,7 @@ public class RegisterActivity extends BaseActivity{
                         }
 
                         @Override
-                        public void registedFailed(String response) {
+                        public void registedFailed(RegResult response) {
                             // TODO Auto-generated method stub
                             runOnUiThread(new Runnable() {
                                 public void run() {

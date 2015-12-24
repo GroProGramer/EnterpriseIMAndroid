@@ -23,7 +23,7 @@ import org.json.JSONObject;
 import wyj.bean.RegResult;
 
 public class RegisterUtil {
-    public static void post(String url,List<NameValuePair> params,RegisterListener listener){
+    public static void register(String url,List<NameValuePair> params,RegisterListener listener){
     	InputStream is=null;
     	String result=null;
     	DefaultHttpClient httpclient=new DefaultHttpClient();
@@ -46,21 +46,15 @@ public class RegisterUtil {
             
              if(listener!=null){
                  if(regResult!=null){
-                     if(regResult.getRegstatus()==Constants.registerSuccess){
-                         listener.registedSucess(result);
+                     if(regResult.getRegstatus()==RegResult.RegStatus.RegSucess){
+                         listener.registedSucess(regResult);
                      }
-                     else listener.registedFailed(result);
+                     else listener.registedFailed(regResult);
                  }
-                 else listener.registedFailed(result);
+                 else listener.registedFailed(regResult);
              }
              
-             /*JSONArray jsonArray = new JSONArray(result);
-             JSONObject loginStatus = (JSONObject)jsonArray.opt(0); 
-             if(loginStatus.getString("status").equals("sucess")){
-                 listener.registedSucess(result);
-             }
-             else if(loginStatus.getString("status").equals("failed"))
-                 listener.registedFailed(result);*/
+             
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -75,40 +69,11 @@ public class RegisterUtil {
     	//loginListener.loginSucess(result);
     }
 
-   /* public static void get(String url,LoginListener loginListener){
-    	String response=null;
-    	InputStream is=null;
-    	DefaultHttpClient httpClient = new DefaultHttpClient();
-        HttpGet httpGet = new HttpGet(url);
-
-        HttpResponse httpResponse;
-		try {
-			httpResponse = httpClient.execute(httpGet);
-			HttpEntity httpEntity = httpResponse.getEntity();
-	        is = httpEntity.getContent();
-	        BufferedReader reader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
-            StringBuilder sb = new StringBuilder();
-            String line = null;
-            while ((line = reader.readLine()) != null)
-              {
-                sb.append(line);
-               }
-              is.close();
-              response = sb.toString();
-		} catch (ClientProtocolException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        
-		loginListener.loginSucess(response);
-    }*/
+ 
     
     public interface RegisterListener{
-    	void registedSucess(String response);
-    	void registedFailed(String response);
+    	void registedSucess(RegResult response);
+    	void registedFailed(RegResult response);
     }
     
 }

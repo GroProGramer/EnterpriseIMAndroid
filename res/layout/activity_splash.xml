@@ -4,22 +4,7 @@
     android:layout_height="fill_parent"
     android:background="@drawable/splash" >
 
-    <ImageView
-        android:id="@+id/iv_splash_logo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:src="@drawable/splash_logo" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/iv_splash_logo"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dip"
-        android:text="即时通讯云领导者"
-        android:textColor="#fff"
-        android:textSize="30sp" />
+    
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -32,7 +17,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="环信DEMO"
+            android:text="IM版本"
             android:textColor="#fff"
             android:textSize="20dip"
             android:typeface="normal" >
