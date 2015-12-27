@@ -18,6 +18,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+
+import wyj.bean.LoginResult;
+import wyj.util.Constants;
+import wyj.util.LoginUtil;
+import wyj.util.LoginUtil.LoginListener;
+
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
@@ -215,7 +223,85 @@ public class LoginActivity extends BaseActivity {
 
 			@Override
 			public void onSuccess() {
-				if (!progressShow) {
+			    
+			    new Thread(new Runnable(){
+
+		            @Override
+		            public void run() {
+		                // TODO Auto-generated method stub
+		                List<NameValuePair> params=new ArrayList<NameValuePair>();
+		                params.add(new BasicNameValuePair("user_id",currentUsername));
+		                params.add(new BasicNameValuePair("password",currentPassword));
+		                LoginUtil.login(Constants.loginUrl, params, new LoginListener(){
+
+		                    @Override
+		                    public void loginSucess(LoginResult response) {
+		                        // TODO Auto-generated method stub
+		                        if (!progressShow) {
+		                            return;
+		                        }
+		                        // 登陆成功，保存用户名密码
+		                        DemoApplication.getInstance().setUserName(currentUsername);
+		                        DemoApplication.getInstance().setPassword(currentPassword);
+
+		                        try {
+		                            // ** 第一次登录或者之前logout后再登录，加载所有本地群和回话
+		                            // ** manually load all local groups and
+		                            EMGroupManager.getInstance().loadAllGroups();
+		                            EMChatManager.getInstance().loadAllConversations();
+		                            // 处理好友和群组
+		                            initializeContacts();
+		                        } catch (Exception e) {
+		                            e.printStackTrace();
+		                            // 取好友或者群聊失败，不让进入主页面
+		                            runOnUiThread(new Runnable() {
+		                                public void run() {
+		                                    pd.dismiss();
+		                                    DemoHXSDKHelper.getInstance().logout(true,null);
+		                                    Toast.makeText(getApplicationContext(), R.string.login_failure_failed, 1).show();
+		                                }
+		                            });
+		                            return;
+		                        }
+		                        // 更新当前用户的nickname 此方法的作用是在ios离线推送时能够显示用户nick
+		                        boolean updatenick = EMChatManager.getInstance().updateCurrentUserNick(
+		                                DemoApplication.currentUserNick.trim());
+		                        if (!updatenick) {
+		                            Log.e("LoginActivity", "update current user nick fail");
+		                        }
+		                        if (!LoginActivity.this.isFinishing() && pd.isShowing()) {
+		                            pd.dismiss();
+		                        }
+		                        // 进入主页面
+		                        Intent intent = new Intent(LoginActivity.this,
+		                                MainActivity.class);
+		                        startActivity(intent);
+		                        
+		                        finish();
+		                        
+		                        
+		                    }
+
+		                    public void loginFailed(LoginResult response) {
+		                        // TODO Auto-generated method stub
+		                        if (!progressShow) {
+		                            return;
+		                        }
+		                        runOnUiThread(new Runnable() {
+		                            public void run() {
+		                                pd.dismiss();
+		                                Toast.makeText(getApplicationContext(), getString(R.string.Login_failed),
+		                                        Toast.LENGTH_SHORT).show();
+		                            }
+		                        });
+		                        
+		                        
+		                    }}); 
+		            }
+		            
+		        }).start();
+			    
+				/*if (!progressShow) {
 					return;
 				}
 				// 登陆成功，保存用户名密码
@@ -255,7 +341,7 @@ public class LoginActivity extends BaseActivity {
 						MainActivity.class);
 				startActivity(intent);
 				
-				finish();
+				finish();*/
 			}
 
 			@Override
