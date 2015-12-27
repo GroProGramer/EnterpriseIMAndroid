@@ -49,7 +49,7 @@ public class LoginUtil {
                    if ("JSESSIONID".equals(cookies.get(i).getName())) {
                        JSESSIONID = cookies.get(i).getValue();
                        SessionUtil.getInstance().setSessionId(JSESSIONID);
-                       Log.v("IM","JSESSIONID="+JSESSIONID);
+                       //Log.v("IM","JSESSIONID="+JSESSIONID);
                        break;
                    }
 
