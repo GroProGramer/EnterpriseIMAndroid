@@ -13,6 +13,18 @@
  */
 package com.easemob.chatuidemo.activity;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+
+import wyj.bean.CreateGroupResult;
+import wyj.bean.GroupMembers;
+import wyj.util.Constants;
+import wyj.util.CreateGroupUtil;
+import wyj.util.CreateGroupUtil.CreateGroupListener;
+import wyj.util.JsonUtil;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -96,7 +108,39 @@ public class NewGroupActivity extends BaseActivity {
 					String groupName = groupNameEditText.getText().toString().trim();
 					String desc = introductionEditText.getText().toString();
 					String[] members = data.getStringArrayExtra("newmembers");
-					try {
+					GroupMembers mebersObj=new GroupMembers(members);
+					String membersStr=JsonUtil.Object2JsonString(mebersObj);
+					List<NameValuePair> params=new ArrayList<NameValuePair>();
+                    params.add(new BasicNameValuePair("user_id",EMChatManager.getInstance().getCurrentUser()));
+                    params.add(new BasicNameValuePair("members",membersStr));
+                    params.add(new BasicNameValuePair("groupName",groupName));
+                    CreateGroupUtil.createGroup(Constants.createGroupUrl, params, new CreateGroupListener(){
+
+                        @Override
+                        public void CreateGroupSucess(CreateGroupResult response) {
+                            // TODO Auto-generated method stub
+                            runOnUiThread(new Runnable() {
+                                public void run() {
+                                    progressDialog.dismiss();
+                                    setResult(RESULT_OK);
+                                    finish();
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void CreateGroupFailed(CreateGroupResult response) {
+                            // TODO Auto-generated method stub
+                            runOnUiThread(new Runnable() {
+                                public void run() {
+                                    progressDialog.dismiss();
+                                    Toast.makeText(NewGroupActivity.this, st2 , 1).show();
+                                }
+                            });
+                        }
+                        
+                    });
+					/*try {
 						if(checkBox.isChecked()){
 							//创建公开群，此种方式创建的群，可以自由加入
 							//创建公开群，此种方式创建的群，用户需要申请，等群主同意后才能加入此群
@@ -119,7 +163,7 @@ public class NewGroupActivity extends BaseActivity {
 								Toast.makeText(NewGroupActivity.this, st2 + e.getLocalizedMessage(), 1).show();
 							}
 						});
-					}
+					}*/
 					
 				}
 			}).start();

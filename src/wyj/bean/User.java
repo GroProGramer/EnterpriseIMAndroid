@@ -3,10 +3,6 @@ package wyj.bean;
 import java.io.Serializable;
 
 public class User implements Serializable{
-
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private String user_id;// 唯一id
 	private String nickname;// 昵称
@@ -98,7 +94,5 @@ public class User implements Serializable{
 	}
 	public void setCreate_time(String create_time) {
 		this.create_time = create_time;
-	}
-	
-	
+	}	
 }
