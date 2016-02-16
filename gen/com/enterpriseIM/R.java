@@ -690,10 +690,11 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int video_recorder_stop_btn=0x7f0200ff;
         public static final int voice_unread=0x7f020100;
         public static final int welcom_logo=0x7f020101;
+        public static final int xlistview_arrow=0x7f020102;
     }
     public static final class id {
         public static final int add_list_friends=0x7f0a0006;
-        public static final int add_to_blacklist=0x7f0a00f7;
+        public static final int add_to_blacklist=0x7f0a0100;
         public static final int alert_message=0x7f0a0090;
         public static final int avatar=0x7f0a000a;
         public static final int avatar_container=0x7f0a00ca;
@@ -751,9 +752,9 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int container_to_group=0x7f0a0010;
         public static final int container_video_call=0x7f0a002a;
         public static final int container_voice_call=0x7f0a0028;
-        public static final int delete_contact=0x7f0a00f6;
-        public static final int delete_conversation=0x7f0a00fb;
-        public static final int delete_message=0x7f0a00fc;
+        public static final int delete_contact=0x7f0a00ff;
+        public static final int delete_conversation=0x7f0a0104;
+        public static final int delete_message=0x7f0a0105;
         public static final int edit=0x7f0a0091;
         public static final int edit_group_introduction=0x7f0a0060;
         public static final int edit_group_name=0x7f0a005f;
@@ -855,7 +856,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int recorder_stop=0x7f0a00c6;
         public static final int recording_container=0x7f0a002e;
         public static final int recording_hint=0x7f0a0030;
-        public static final int remove=0x7f0a00fd;
+        public static final int remove=0x7f0a0106;
         public static final int rl_blacklist=0x7f0a0041;
         public static final int rl_bottom=0x7f0a0015;
         public static final int rl_change_group_name=0x7f0a0040;
@@ -934,9 +935,9 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int underline=0x7f0a0002;
         public static final int unread_address_number=0x7f0a005b;
         public static final int unread_msg_number=0x7f0a0058;
-        public static final int update_blacklist=0x7f0a00f9;
-        public static final int update_contacts=0x7f0a00f8;
-        public static final int update_groups=0x7f0a00fa;
+        public static final int update_blacklist=0x7f0a0102;
+        public static final int update_contacts=0x7f0a0101;
+        public static final int update_groups=0x7f0a0103;
         public static final int user_head_avatar=0x7f0a0074;
         public static final int user_head_headphoto_update=0x7f0a0075;
         public static final int user_nickname=0x7f0a0078;
@@ -946,6 +947,15 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int vPager=0x7f0a0021;
         public static final int video_data_area=0x7f0a0097;
         public static final int video_icon=0x7f0a0096;
+        public static final int xlistview_footer_content=0x7f0a00f6;
+        public static final int xlistview_footer_hint_textview=0x7f0a00f8;
+        public static final int xlistview_footer_progressbar=0x7f0a00f7;
+        public static final int xlistview_header_arrow=0x7f0a00fd;
+        public static final int xlistview_header_content=0x7f0a00f9;
+        public static final int xlistview_header_hint_textview=0x7f0a00fb;
+        public static final int xlistview_header_progressbar=0x7f0a00fe;
+        public static final int xlistview_header_text=0x7f0a00fa;
+        public static final int xlistview_header_time=0x7f0a00fc;
     }
     public static final class integer {
         public static final int default_circle_indicator_orientation=0x7f0c0000;
@@ -1035,6 +1045,8 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int search_bar=0x7f03004d;
         public static final int search_bar_with_padding=0x7f03004e;
         public static final int showvideo_activity=0x7f03004f;
+        public static final int xlistview_footer=0x7f030050;
+        public static final int xlistview_header=0x7f030051;
     }
     public static final class menu {
         public static final int context_contact_list=0x7f0d0000;
@@ -1349,6 +1361,12 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int video=0x7f08002d;
         public static final int voice=0x7f08002b;
         public static final int voice_call=0x7f08002f;
+        public static final int xlistview_footer_hint_normal=0x7f080134;
+        public static final int xlistview_footer_hint_ready=0x7f080135;
+        public static final int xlistview_header_hint_loading=0x7f080132;
+        public static final int xlistview_header_hint_normal=0x7f080130;
+        public static final int xlistview_header_hint_ready=0x7f080131;
+        public static final int xlistview_header_last_time=0x7f080133;
         public static final int yangshengqi=0x7f080045;
         public static final int you_are_group=0x7f080097;
     }
