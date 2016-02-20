@@ -24,6 +24,19 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.baidu.location.BDLocation;
+import com.baidu.location.BDLocationListener;
+import com.baidu.location.LocationClient;
+import com.baidu.location.LocationClientOption;
+import com.baidu.mapapi.SDKInitializer;
+import com.baidu.mapapi.model.LatLng;
+import com.baidu.mapapi.radar.RadarNearbyResult;
+import com.baidu.mapapi.radar.RadarNearbySearchOption;
+import com.baidu.mapapi.radar.RadarSearchError;
+import com.baidu.mapapi.radar.RadarSearchListener;
+import com.baidu.mapapi.radar.RadarSearchManager;
+import com.baidu.mapapi.radar.RadarUploadInfo;
+import com.baidu.mapapi.radar.RadarUploadInfoCallback;
 import com.easemob.EMCallBack;
 import com.easemob.EMConnectionListener;
 import com.easemob.EMError;
@@ -44,6 +57,7 @@ import com.easemob.chat.EMMessage.ChatType;
 import com.easemob.chat.EMMessage.Type;
 import com.easemob.chat.TextMessageBody;
 import com.easemob.chatuidemo.Constant;
+import com.easemob.chatuidemo.DemoApplication;
 import com.easemob.chatuidemo.DemoHXSDKHelper;
 import com.enterpriseIM.R;
 import com.easemob.chatuidemo.db.InviteMessgeDao;
@@ -59,6 +73,10 @@ import com.umeng.analytics.MobclickAgent;
 
 public class MainActivity extends BaseActivity implements EMEventListener {
 
+    
+    RadarSearchManager mManager;
+    LatLng pt=null;
+    
 	protected static final String TAG = "MainActivity";
 	// 未读消息textview
 	private TextView unreadLabel;
@@ -139,6 +157,113 @@ public class MainActivity extends BaseActivity implements EMEventListener {
 		init();
 		//异步获取当前用户的昵称和头像
 		((DemoHXSDKHelper)HXSDKHelper.getInstance()).getUserProfileManager().asyncGetCurrentUserInfo();
+		
+		/***********************************************************************************************/
+        /*SDKInitializer.initialize(getApplicationContext());
+        mManager = RadarSearchManager.getInstance();
+        mManager = RadarSearchManager.getInstance();
+        mManager.addNearbyInfoListener(new RadarSearchListener(){
+
+            @Override
+            public void onGetClearInfoState(RadarSearchError arg0) {
+                // TODO Auto-generated method stub
+                
+            }
+
+            @Override
+            public void onGetNearbyInfoList(RadarNearbyResult result,
+                    RadarSearchError error) {
+                // TODO Auto-generated method stub
+                if (error == RadarSearchError.RADAR_NO_ERROR) {
+                    Toast.makeText(MainActivity.this, "查询周边成功", Toast.LENGTH_LONG)
+                        .show();
+                    //获取成功，处理数据
+                    Log.v("baidu","查询周边成功："+result);
+                } else {
+                    //获取失败
+                    Toast.makeText(MainActivity.this, "查询周边失败", Toast.LENGTH_LONG)
+                        .show();
+                    Log.v("baidu","查询周边失败："+result);
+                }
+            }
+
+            @Override
+            public void onGetUploadState(RadarSearchError error) {
+                // TODO Auto-generated method stub
+                if (error == RadarSearchError.RADAR_NO_ERROR) {
+                    //上传成功
+                    Toast.makeText(MainActivity.this, "单次上传位置成功", Toast.LENGTH_LONG)
+                            .show();
+                    LatLng p=pt;
+                    RadarNearbySearchOption option = new RadarNearbySearchOption().radius(2000);
+                    boolean b=mManager.nearbyInfoRequest(option);
+                   
+                    Log.v("baidu","请求周边用户信息结果："+b);
+                } else {
+                    //上传失败
+                    Toast.makeText(MainActivity.this, "单次上传位置失败", Toast.LENGTH_LONG)
+                            .show();
+                }
+            }});
+        Log.v("baidu","百度地图初始化成功");
+        LocationClient locationClient = new LocationClient(MainActivity.this);
+        LocationClientOption locationoption = new LocationClientOption();
+        locationoption.setOpenGps(true); // 是否打开GPS
+        locationoption.setCoorType("bd09ll"); 
+        locationoption.setPoiExtraInfo(true);
+        locationoption.setAddrType("all");
+        locationoption.setScanSpan(500);
+        locationoption.setPriority(LocationClientOption.NetWorkFirst); // 设置网络优先,不设置，默认是gps优先
+        locationoption.setPoiNumber(10);
+        locationClient.setLocOption(locationoption);
+        locationClient.registerLocationListener(new BDLocationListener() {
+
+            @Override
+            public void onReceiveLocation(BDLocation location) {
+                // TODO Auto-generated method stub
+                if (location == null) {
+                    Log.v("baidu","获取不到本地位置");
+                    return;
+                }
+                pt=new LatLng(location.getLatitude(),location.getLongitude());
+                Log.v("baidu","获取本地位置成功"+location.getAddrStr()+"--pt:"+pt);
+                mManager.startUploadAuto(new RadarUploadInfoCallback(){
+
+                    @Override
+                    public RadarUploadInfo onUploadInfoCallback() {
+                        // TODO Auto-generated method stub
+                        RadarUploadInfo info = new RadarUploadInfo();
+                        mManager.setUserID(DemoApplication.getInstance().getUserName());
+                        info.comments = "我是测试用户";
+                        info.pt = pt;
+                        return info;
+                    }}, 5000);
+            }
+
+            @Override
+            public void onReceivePoi(BDLocation location) {
+                // TODO Auto-generated method stub
+                
+            }});
+        if(!locationClient.isStarted()){
+            locationClient.start();
+        }
+        locationClient.requestLocation();
+        locationClient.requestPoi();
+       
+        mManager.setUserID(DemoApplication.getInstance().getUserName());
+        RadarUploadInfo info = new RadarUploadInfo();
+        info.comments = "我是测试用户";
+        info.pt = pt;
+        boolean a=mManager.uploadInfoRequest(info);
+        
+        Log.v("baidu","上传地址信息结果："+a);
+        
+        
+        RadarNearbySearchOption option = new RadarNearbySearchOption();//.centerPt(pt);//.radius(2000);
+        mManager.nearbyInfoRequest(option);
+        Log.v("baidu","获取周边用户信息");*/
+        /***********************************************************************************************/
 	}
 
 	private void init() {     
