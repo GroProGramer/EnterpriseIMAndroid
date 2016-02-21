@@ -89,6 +89,7 @@ public class MainActivity extends BaseActivity implements EMEventListener {
 	private ChatAllHistoryFragment chatHistoryFragment;
 	private SettingsFragment settingFragment;
 	private UserProfileFragment userProfileFragment;
+	private YuJianFragment yujianFragment;
 	private Fragment[] fragments;
 	private int index;
 	// 当前fragment的index
@@ -148,11 +149,15 @@ public class MainActivity extends BaseActivity implements EMEventListener {
 		contactListFragment = new ContactlistFragment();
 		settingFragment = new SettingsFragment();
 		userProfileFragment=new UserProfileFragment();
-		fragments = new Fragment[] { chatHistoryFragment, contactListFragment, userProfileFragment };
+		yujianFragment=new YuJianFragment();
+		fragments = new Fragment[] {yujianFragment, chatHistoryFragment, contactListFragment, userProfileFragment };
 		// 添加显示第一个fragment
-		getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, chatHistoryFragment)
+		/*getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, chatHistoryFragment)
 				.add(R.id.fragment_container, contactListFragment).hide(contactListFragment).show(chatHistoryFragment)
-				.commit();
+				.commit();*/
+		getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, yujianFragment)
+        .add(R.id.fragment_container, chatHistoryFragment).hide(chatHistoryFragment).show(yujianFragment)
+        .commit();
 		
 		init();
 		//异步获取当前用户的昵称和头像
@@ -443,14 +448,15 @@ public class MainActivity extends BaseActivity implements EMEventListener {
 	private void initView() {
 		unreadLabel = (TextView) findViewById(R.id.unread_msg_number);
 		unreadAddressLable = (TextView) findViewById(R.id.unread_address_number);
-		mTabs = new Button[3];
-		mTabs[0] = (Button) findViewById(R.id.btn_conversation);
-		mTabs[1] = (Button) findViewById(R.id.btn_address_list);
-		mTabs[2] = (Button) findViewById(R.id.btn_setting);
+		mTabs = new Button[4];
+		mTabs[0] = (Button) findViewById(R.id.btn_yujian);
+		mTabs[1] = (Button) findViewById(R.id.btn_conversation);
+		mTabs[2] = (Button) findViewById(R.id.btn_address_list);
+		mTabs[3] = (Button) findViewById(R.id.btn_setting);
 		// 把第一个tab设为选中状态
 		mTabs[0].setSelected(true);
 
-		registerForContextMenu(mTabs[1]);
+		registerForContextMenu(mTabs[2]);
 	}
 
 	/**
@@ -460,14 +466,17 @@ public class MainActivity extends BaseActivity implements EMEventListener {
 	 */
 	public void onTabClicked(View view) {
 		switch (view.getId()) {
+		case R.id.btn_yujian:
+		    index=0;
+		    break;
 		case R.id.btn_conversation:
-			index = 0;
-			break;
-		case R.id.btn_address_list:
 			index = 1;
 			break;
-		case R.id.btn_setting:
+		case R.id.btn_address_list:
 			index = 2;
+			break;
+		case R.id.btn_setting:
+			index = 3;
 			break;
 		}
 		if (currentTabIndex != index) {
