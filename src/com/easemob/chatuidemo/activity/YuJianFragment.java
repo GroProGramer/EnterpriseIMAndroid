@@ -16,7 +16,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.Toast;
-
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
@@ -35,7 +34,7 @@ import com.easemob.chatuidemo.adapter.YuJianAdapter;
 import com.easemob.chatuidemo.adapter.YuJianAdapter1;
 import com.enterpriseIM.R;
 
-public class YuJianFragment extends Fragment implements IXListViewListener,RadarSearchListener{
+public class YuJianFragment extends Fragment implements IXListViewListener,RadarSearchListener,BDLocationListener{
 
     RadarSearchManager mManager=null;
     LatLng pt=null;
@@ -49,6 +48,7 @@ public class YuJianFragment extends Fragment implements IXListViewListener,Radar
     private LinearLayout shaixuan;
     private XListView mListView;
     private YuJianAdapter1 mAdapter;
+    private boolean uploadLocOnce=true;
     
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -62,6 +62,11 @@ public class YuJianFragment extends Fragment implements IXListViewListener,Radar
         
         pengpeng = (LinearLayout)view.findViewById(R.id.pengpeng);
         shaixuan = (LinearLayout)view.findViewById(R.id.shaixuan);
+        userList=new ArrayList<User>();
+        loadUsers();
+        //mAdapter = new YuJianAdapter(getActivity(), R.layout.zaina_list_item, userList);
+        mAdapter = new YuJianAdapter1(getActivity(),  userList);
+        mListView.setAdapter(mAdapter);
         return view;
     }
     
@@ -72,11 +77,7 @@ public class YuJianFragment extends Fragment implements IXListViewListener,Radar
         // TODO Auto-generated method stub
         super.onActivityCreated(savedInstanceState);
 
-        userList=new ArrayList<User>();
-        loadUsers();
-        //mAdapter = new YuJianAdapter(getActivity(), R.layout.zaina_list_item, userList);
-        mAdapter = new YuJianAdapter1(getActivity(),  userList);
-        mListView.setAdapter(mAdapter);
+       
     }
 
 
@@ -111,11 +112,12 @@ public class YuJianFragment extends Fragment implements IXListViewListener,Radar
         locationoption.setCoorType("bd09ll"); 
         locationoption.setPoiExtraInfo(true);
         locationoption.setAddrType("all");
-        locationoption.setScanSpan(500);
+        locationoption.setScanSpan(1000);
         locationoption.setPriority(LocationClientOption.NetWorkFirst); // 设置网络优先,不设置，默认是gps优先
         locationoption.setPoiNumber(10);
         locationClient.setLocOption(locationoption);
-        locationClient.registerLocationListener(new BDLocationListener() {
+        locationClient.registerLocationListener(this);
+        /*locationClient.registerLocationListener(new BDLocationListener() {
 
             @Override
             public void onReceiveLocation(BDLocation location) {
@@ -126,14 +128,15 @@ public class YuJianFragment extends Fragment implements IXListViewListener,Radar
                 }
                 pt=new LatLng(location.getLatitude(),location.getLongitude());
                 Log.v("baidu","获取本地位置成功"+location.getAddrStr()+"--pt:"+pt);
-                mManager.setUserID(DemoApplication.getInstance().getUserName());
+                uploadOnce();*/
+                /*mManager.setUserID(DemoApplication.getInstance().getUserName());
                 RadarUploadInfo info = new RadarUploadInfo();
                 info.comments = "我是测试用户";
                 info.pt = pt;
-                boolean c=mManager.uploadInfoRequest(info);
+                boolean c=RadarSearchManager.getInstance().uploadInfoRequest(info);
                 
-                Log.v("baidu","主动上传位置结果："+c);
-                mManager.startUploadAuto(new RadarUploadInfoCallback(){
+                Log.v("baidu","主动上传位置结果："+c);*/
+                /*mManager.startUploadAuto(new RadarUploadInfoCallback(){
 
                     @Override
                     public RadarUploadInfo onUploadInfoCallback() {
@@ -144,26 +147,27 @@ public class YuJianFragment extends Fragment implements IXListViewListener,Radar
                         info.pt = pt;
                         return info;
                     }}, 5000);
-            }
+                */
+           // }
 
-            @Override
+          /*  @Override
             public void onReceivePoi(BDLocation location) {
                 // TODO Auto-generated method stub
                 
-            }});
+            }});*/
         if(!locationClient.isStarted()){
             locationClient.start();
         }
         locationClient.requestLocation();
         locationClient.requestPoi();
        
-        mManager.setUserID(DemoApplication.getInstance().getUserName());
+        /*mManager.setUserID(DemoApplication.getInstance().getUserName());
         RadarUploadInfo info = new RadarUploadInfo();
         info.comments = "我是测试用户";
         info.pt = pt;
         boolean a=mManager.uploadInfoRequest(info);
         
-        Log.v("baidu","上传地址信息结果："+a);
+        Log.v("baidu","上传地址信息结果："+a);*/
         
         
        //RadarNearbySearchOption option = new RadarNearbySearchOption();//.centerPt(pt);//.radius(2000);
@@ -223,7 +227,7 @@ public class YuJianFragment extends Fragment implements IXListViewListener,Radar
             RadarNearbySearchOption option = new RadarNearbySearchOption().radius(2000);
             boolean b=mManager.nearbyInfoRequest(option);
            
-            Log.v("baidu","请求周边用户信息结果："+b);
+           // Log.v("baidu","请求周边用户信息结果："+b);
         } else {
             //上传失败
             /*Toast.makeText(getActivity(), "单次上传位置失败", Toast.LENGTH_LONG)
@@ -232,6 +236,39 @@ public class YuJianFragment extends Fragment implements IXListViewListener,Radar
         }
     }
     
-    
+    public void uploadOnce(){
+        uploadLocOnce=false;
+        if (pt == null) {
+            Toast.makeText(getActivity(), "未获取到位置", Toast.LENGTH_LONG)
+            .show();
+            return;
+        }
+        mManager.setUserID(DemoApplication.getInstance().getUserName());
+        RadarUploadInfo info = new RadarUploadInfo();
+        info.comments = "我是测试机";
+        info.pt = pt;
+        boolean c=RadarSearchManager.getInstance().uploadInfoRequest(info);
+        //Log.v("baidu","主动上传位置结果："+c);
+    }
+
+
+
+    @Override
+    public void onReceiveLocation(BDLocation location) {
+        // TODO Auto-generated method stub
+        if (location == null||uploadLocOnce==false)
+            return;
+        pt = new LatLng(location.getLatitude(), location.getLongitude());
+        Log.v("baidu","获取本地位置成功"+location.getAddrStr()+"--pt:"+pt);
+        uploadOnce();
+    }
+
+
+
+    @Override
+    public void onReceivePoi(BDLocation arg0) {
+        // TODO Auto-generated method stub
+        
+    }
 
 }
