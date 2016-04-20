@@ -2,22 +2,23 @@ package com.easemob.chatuidemo.activity;
 
 import java.util.ArrayList;
 import java.util.List;
+import com.enterpriseIM.R;
 
 import wyj.bean.MoodBean;
 
-import com.enterpriseIM.R;
-
 import me.maxwin.view.XListView;
 import me.maxwin.view.XListView.IXListViewListener;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-public class SquareFragment extends Fragment implements IXListViewListener{
+public class SquareFragment extends Fragment implements IXListViewListener,OnClickListener{
 
     private XListView mListView;
     private LinearLayout publish;
@@ -50,11 +51,24 @@ public class SquareFragment extends Fragment implements IXListViewListener{
         mListView = (XListView)getView().findViewById(R.id.gushi_xListView);
         mListView.setPullLoadEnable(true);
         publish = (LinearLayout)getView().findViewById(R.id.fabu_gushi);
+        publish.setOnClickListener(this);
     }
     
     public void initData(){
         usersMood=new ArrayList<MoodBean>();
         
+    }
+
+    @Override
+    public void onClick(View view) {
+        // TODO Auto-generated method stub
+        switch(view.getId()){
+          case R.id.fabu_gushi:
+              //Intent intent = new Intent(getActivity(), PublishActivity.class);
+              //startActivity(intent);
+              break;
+          default:break;
+        }
     }
     
 }

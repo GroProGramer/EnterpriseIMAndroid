@@ -13,9 +13,14 @@ import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
+
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
@@ -28,13 +33,11 @@ import com.baidu.mapapi.radar.RadarSearchError;
 import com.baidu.mapapi.radar.RadarSearchListener;
 import com.baidu.mapapi.radar.RadarSearchManager;
 import com.baidu.mapapi.radar.RadarUploadInfo;
-import com.baidu.mapapi.radar.RadarUploadInfoCallback;
 import com.easemob.chatuidemo.DemoApplication;
-import com.easemob.chatuidemo.adapter.YuJianAdapter;
 import com.easemob.chatuidemo.adapter.YuJianAdapter1;
 import com.enterpriseIM.R;
 
-public class YuJianFragment extends Fragment implements IXListViewListener,RadarSearchListener,BDLocationListener{
+public class YuJianFragment extends Fragment implements IXListViewListener,RadarSearchListener,BDLocationListener,OnClickListener,OnItemClickListener{
 
     RadarSearchManager mManager=null;
     LatLng pt=null;
@@ -45,10 +48,14 @@ public class YuJianFragment extends Fragment implements IXListViewListener,Radar
     private static ProgressDialog pd = null ;
     private static boolean progressShow = false;//进度条是否显示
     private LinearLayout pengpeng;
-    private LinearLayout shaixuan;
+    private LinearLayout screenLl;
     private XListView mListView;
     private YuJianAdapter1 mAdapter;
-    private boolean uploadLocOnce=true;
+    private boolean firstLoad=true;
+    private TextView screenTv;
+    private BDLocation location;
+    private LocationClient locationClient;
+    private LocationClientOption locationoption;
     
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -60,13 +67,16 @@ public class YuJianFragment extends Fragment implements IXListViewListener,Radar
         mListView = (XListView)view.findViewById(R.id.xListView);
         mListView.setPullLoadEnable(true);
         
-        pengpeng = (LinearLayout)view.findViewById(R.id.pengpeng);
-        shaixuan = (LinearLayout)view.findViewById(R.id.shaixuan);
+        //pengpeng = (LinearLayout)view.findViewById(R.id.pengpeng);
+        screenLl = (LinearLayout)view.findViewById(R.id.screenLl);
+        //screenTv=(TextView)view.findViewById(R.id.screen);
+        screenLl.setOnClickListener(this);
         userList=new ArrayList<User>();
         loadUsers();
         //mAdapter = new YuJianAdapter(getActivity(), R.layout.zaina_list_item, userList);
         mAdapter = new YuJianAdapter1(getActivity(),  userList);
         mListView.setAdapter(mAdapter);
+        mListView.setOnItemClickListener(this);
         return view;
     }
     
@@ -91,7 +101,7 @@ public class YuJianFragment extends Fragment implements IXListViewListener,Radar
     @Override
     public void onRefresh() {
         // TODO Auto-generated method stub
-        
+        uploadOnce();
     }
 
     @Override
@@ -106,78 +116,25 @@ public class YuJianFragment extends Fragment implements IXListViewListener,Radar
         mManager.addNearbyInfoListener(this);
       
         Log.v("baidu","百度地图初始化成功");
-        LocationClient locationClient = new LocationClient(getActivity());
-        LocationClientOption locationoption = new LocationClientOption();
+        locationClient = new LocationClient(getActivity());
+        locationoption = new LocationClientOption();
         locationoption.setOpenGps(true); // 是否打开GPS
         locationoption.setCoorType("bd09ll"); 
         locationoption.setPoiExtraInfo(true);
         locationoption.setAddrType("all");
-        locationoption.setScanSpan(1000);
         locationoption.setPriority(LocationClientOption.NetWorkFirst); // 设置网络优先,不设置，默认是gps优先
         locationoption.setPoiNumber(10);
+        locationoption.setScanSpan(10000);//设置定位频率
         locationClient.setLocOption(locationoption);
         locationClient.registerLocationListener(this);
-        /*locationClient.registerLocationListener(new BDLocationListener() {
-
-            @Override
-            public void onReceiveLocation(BDLocation location) {
-                // TODO Auto-generated method stub
-                if (location == null) {
-                    Log.v("baidu","获取不到本地位置");
-                    return;
-                }
-                pt=new LatLng(location.getLatitude(),location.getLongitude());
-                Log.v("baidu","获取本地位置成功"+location.getAddrStr()+"--pt:"+pt);
-                uploadOnce();*/
-                /*mManager.setUserID(DemoApplication.getInstance().getUserName());
-                RadarUploadInfo info = new RadarUploadInfo();
-                info.comments = "我是测试用户";
-                info.pt = pt;
-                boolean c=RadarSearchManager.getInstance().uploadInfoRequest(info);
-                
-                Log.v("baidu","主动上传位置结果："+c);*/
-                /*mManager.startUploadAuto(new RadarUploadInfoCallback(){
-
-                    @Override
-                    public RadarUploadInfo onUploadInfoCallback() {
-                        // TODO Auto-generated method stub
-                        RadarUploadInfo info = new RadarUploadInfo();
-                        mManager.setUserID(DemoApplication.getInstance().getUserName());
-                        info.comments = "我是测试用户";
-                        info.pt = pt;
-                        return info;
-                    }}, 5000);
-                */
-           // }
-
-          /*  @Override
-            public void onReceivePoi(BDLocation location) {
-                // TODO Auto-generated method stub
-                
-            }});*/
+       
         if(!locationClient.isStarted()){
             locationClient.start();
         }
         locationClient.requestLocation();
-        locationClient.requestPoi();
-       
-        /*mManager.setUserID(DemoApplication.getInstance().getUserName());
-        RadarUploadInfo info = new RadarUploadInfo();
-        info.comments = "我是测试用户";
-        info.pt = pt;
-        boolean a=mManager.uploadInfoRequest(info);
-        
-        Log.v("baidu","上传地址信息结果："+a);*/
-        
-        
-       //RadarNearbySearchOption option = new RadarNearbySearchOption();//.centerPt(pt);//.radius(2000);
-        //mManager.nearbyInfoRequest(option);
-        //Log.v("baidu","获取周边用户信息");
+        //locationClient.requestPoi();
     }
     
-    private void geneItems(final int ACTION){
-        
-    }
 
 
 
@@ -198,6 +155,11 @@ public class YuJianFragment extends Fragment implements IXListViewListener,Radar
                 .show();*/
             //获取成功，处理数据
             Log.v("baidu","查询周边成功："+result);
+            if(result.infoList.size()==0){
+                Toast.makeText(getActivity(), "附近没有其他用户", Toast.LENGTH_LONG).show();
+                return;
+            }
+            userList.clear();
             for(int i=0;i<result.infoList.size();i++){
                 User user=new User();
                 user.setUser_id(result.infoList.get(i).userID);
@@ -223,8 +185,8 @@ public class YuJianFragment extends Fragment implements IXListViewListener,Radar
            /*Toast.makeText(getActivity(), "单次上传位置成功", Toast.LENGTH_LONG)
                     .show();*/
             Log.v("baidu","上传位置成功");
-            LatLng p=pt;
-            RadarNearbySearchOption option = new RadarNearbySearchOption().radius(2000);
+            LatLng p=pt;    
+            RadarNearbySearchOption option = new RadarNearbySearchOption().centerPt(pt).radius(2000);
             boolean b=mManager.nearbyInfoRequest(option);
            
            // Log.v("baidu","请求周边用户信息结果："+b);
@@ -237,7 +199,7 @@ public class YuJianFragment extends Fragment implements IXListViewListener,Radar
     }
     
     public void uploadOnce(){
-        uploadLocOnce=false;
+        firstLoad=false;
         if (pt == null) {
             Toast.makeText(getActivity(), "未获取到位置", Toast.LENGTH_LONG)
             .show();
@@ -256,8 +218,14 @@ public class YuJianFragment extends Fragment implements IXListViewListener,Radar
     @Override
     public void onReceiveLocation(BDLocation location) {
         // TODO Auto-generated method stub
-        if (location == null||uploadLocOnce==false)
+        if (location == null){
+            Toast.makeText(getActivity(), "获取位置信息失败", Toast.LENGTH_SHORT).show();
             return;
+        }
+        if(firstLoad==false){
+            return;
+        }   
+        this.location=location;
         pt = new LatLng(location.getLatitude(), location.getLongitude());
         Log.v("baidu","获取本地位置成功"+location.getAddrStr()+"--pt:"+pt);
         uploadOnce();
@@ -269,6 +237,25 @@ public class YuJianFragment extends Fragment implements IXListViewListener,Radar
     public void onReceivePoi(BDLocation arg0) {
         // TODO Auto-generated method stub
         
+    }
+
+    @Override
+    public void onClick(View view) {
+        // TODO Auto-generated method stub
+        switch(view.getId()){
+           case R.id.screenLl:
+               
+               break;
+        }
+    }
+
+
+
+    @Override
+    public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
+        // TODO Auto-generated method stub
+        User user=userList.get(position-1);
+        //跳入用户个人资料页面
     }
 
 }

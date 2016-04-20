@@ -76,7 +76,7 @@
             android:textSize="18sp" />
         </LinearLayout>
         <LinearLayout  
-            android:id="@+id/shaixuan"
+            android:id="@+id/screenLl"
 		    android:layout_width="50dip"
 		    android:layout_height="match_parent"
 		    android:background="@drawable/common_tab_bg"
@@ -84,7 +84,7 @@
 		    android:orientation="horizontal" 
 		    android:gravity="center_horizontal"
 		    android:layout_alignParentRight="true"
-		    android:onClick="pengpeng" > 
+		     > 
 		      <TextView
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
@@ -93,6 +93,7 @@
 		        android:textColor="#2d2d2d" 
 		        android:text="|" />
 	       	 <TextView
+	       	    android:id="@+id/screen"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
 		        android:layout_gravity="center_vertical" 

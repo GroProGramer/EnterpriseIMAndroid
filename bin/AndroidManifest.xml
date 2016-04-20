@@ -364,8 +364,12 @@
 
         <activity
             android:name=".SettingActivity"
-            android:label="@string/title_activity_setting" 
-            android:theme="@android:style/Theme.NoTitleBar">
+            android:label="@string/title_activity_setting"
+            android:theme="@android:style/Theme.NoTitleBar" >
+        </activity>
+        <activity
+            android:name=".PublishActivity"
+            android:label="@string/title_activity_publish" >
         </activity>
     </application>
 

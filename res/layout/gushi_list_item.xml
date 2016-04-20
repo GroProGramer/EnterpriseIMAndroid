@@ -39,7 +39,7 @@
         android:layout_toRightOf="@id/avator"
         android:autoLink="web" />
 
-    <com.easemob.chatuidemo.widget.NoScrollGridView
+    <com.ccxt.whl.gushi.NoScrollGridView
         android:id="@+id/gridView"
         android:layout_width="245dp"
         android:layout_height="wrap_content"
