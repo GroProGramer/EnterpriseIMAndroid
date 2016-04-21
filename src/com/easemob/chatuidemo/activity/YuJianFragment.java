@@ -7,6 +7,7 @@ import me.maxwin.view.XListView;
 import me.maxwin.view.XListView.IXListViewListener;
 import wyj.bean.User;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -256,6 +257,17 @@ public class YuJianFragment extends Fragment implements IXListViewListener,Radar
         // TODO Auto-generated method stub
         User user=userList.get(position-1);
         //跳入用户个人资料页面
+        Intent intent=new Intent(getActivity(),UserInfoActivity.class);
+        intent.putExtra("username", user.getUser_id());
+        startActivity(intent);
     }
 
 }
+
+
+
+
+
+
+
+

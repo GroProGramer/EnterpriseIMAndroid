@@ -34,6 +34,7 @@
     <string name="copy">Copy</string>
     <string name="forward">Forward</string>
     <string name="button_logout">Logout</string>
+    <string name="button_addFriend">Add As Friend</string>
     <string name="button_uploadlog">Upload the log</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
@@ -304,5 +305,6 @@
     <string name="xlistview_footer_hint_normal">查看更多</string>
     <string name="xlistview_footer_hint_ready">松开载入更多</string>
     <string name="title_activity_publish">PublishActivity</string>
+    <string name="title_activity_user_info">UserInfoActivity</string>
 
 </resources>

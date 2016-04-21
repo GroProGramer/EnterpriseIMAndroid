@@ -371,6 +371,13 @@
             android:name=".PublishActivity"
             android:label="@string/title_activity_publish" >
         </activity>
+        <activity
+            android:name="com.easemob.chatuidemo.activity.UserInfoActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/horizontal_slide"
+            android:windowSoftInputMode="adjustPan"
+            android:label="@string/title_activity_user_info" >
+        </activity>
     </application>
 
 </manifest>
