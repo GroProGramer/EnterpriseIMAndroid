@@ -17,7 +17,18 @@ public class User implements Serializable{
 	private String sex;
 	private String device_id;
 	private String create_time;
-	public String getUser_id() {
+	
+	
+	private String distance;
+	
+	
+	public String getDistance() {
+        return distance;
+    }
+    public void setDistance(String distance) {
+        this.distance = distance;
+    }
+    public String getUser_id() {
 		return user_id;
 	}
 	public void setUser_id(String user_id) {

@@ -3,7 +3,23 @@ package wyj.bean;
 public class LoginResult {
 	
 	private ResultCode loginStatus;
-	
+    private User user;
+    
+
+
+
+    
+    public User getUser() {
+        return user;
+    }
+
+
+
+
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 	
 
 

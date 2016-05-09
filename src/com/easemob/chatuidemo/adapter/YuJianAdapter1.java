@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMConversation;
+import com.easemob.chatuidemo.utils.UserUtils;
 import com.enterpriseIM.R;
 
 import wyj.bean.User;
@@ -70,9 +71,11 @@ public class YuJianAdapter1 extends BaseAdapter {
         }
         final User user = (User)getItem(position);
         String userId = user.getUser_id();
-        EMConversation conversation = EMChatManager.getInstance().getConversation(userId);
-        holder.name.setText(user.getNickname()!= null ? user.getNickname() : userId);
-        
+        //EMConversation conversation = EMChatManager.getInstance().getConversation(userId);
+        //holder.name.setText(user.getNickname()!= null ? user.getNickname() : userId);
+        UserUtils.setUserNick(userId, holder.name);
+        holder.city.setText(user.getDistance());
+        UserUtils.setUserAvatar(context, userId, holder.avatar);
         return convertView;
     }
     

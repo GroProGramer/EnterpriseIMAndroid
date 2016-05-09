@@ -14,8 +14,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -47,7 +49,9 @@ public class UserInfoActivity extends BaseActivity implements OnClickListener{
     private ProgressDialog dialog;
     private RelativeLayout rlNickName;
     private String username;
+    private boolean isFriend=false;
     private ProgressDialog progressDialog;
+    private Button btn;
     
     
     
@@ -67,11 +71,13 @@ public class UserInfoActivity extends BaseActivity implements OnClickListener{
         rlNickName = (RelativeLayout) findViewById(R.id.rl_nickname);
         iconRightArrow = (ImageView) findViewById(R.id.ic_right_arrow);
         llAddFriend=(LinearLayout)findViewById(R.id.ll_add_friend);
+        btn=(Button)findViewById(R.id.btn_send_msg_or_make_friend);
     }
     
     private void initListener() {
         Intent intent = getIntent();
         username = intent.getStringExtra("username");
+        isFriend=intent.getBooleanExtra("isFriend", false);
         boolean enableUpdate = intent.getBooleanExtra("setting", false);
         if (enableUpdate) {
             headPhotoUpdate.setVisibility(View.VISIBLE);
@@ -100,9 +106,13 @@ public class UserInfoActivity extends BaseActivity implements OnClickListener{
         
         llAddFriend.setOnClickListener(this);
     }
+    
+    public void beginConversation(String username){
+        startActivity(new Intent(this, ChatActivity.class).putExtra("userId", username));
+    }
 
     public void addContact(){
-        if(DemoApplication.getInstance().getUserName().equals(username)){
+       /* if(DemoApplication.getInstance().getUserName().equals(username)){
             String str = getString(R.string.not_add_myself);
             startActivity(new Intent(this, AlertDialog.class).putExtra("msg", str));
             return;
@@ -118,8 +128,8 @@ public class UserInfoActivity extends BaseActivity implements OnClickListener{
             //startActivity(new Intent(this, AlertDialog.class).putExtra("msg", strin));
             Toast.makeText(this, strin, Toast.LENGTH_SHORT).show();
             return;
-        }
-        
+        }*/
+        Log.v("baidu","点击了添加好友！");
         progressDialog = new ProgressDialog(this);
         String stri = getResources().getString(R.string.Is_sending_a_request);
         progressDialog.setMessage(stri);
@@ -136,6 +146,7 @@ public class UserInfoActivity extends BaseActivity implements OnClickListener{
                     runOnUiThread(new Runnable() {
                         public void run() {
                             progressDialog.dismiss();
+                            
                             String s1 = getResources().getString(R.string.send_successful);
                             Toast.makeText(getApplicationContext(), s1, 1).show();
                         }
@@ -161,7 +172,13 @@ public class UserInfoActivity extends BaseActivity implements OnClickListener{
             uploadHeadPhoto();
             break;
         case R.id.ll_add_friend:
-            addContact();
+            if(isFriend){
+                btn.setText(this.getString(R.string.button_send_msg));
+                beginConversation(username);
+            }
+            else{
+                addContact();
+            }
             break;
         case R.id.rl_nickname:
             final EditText editText = new EditText(this);

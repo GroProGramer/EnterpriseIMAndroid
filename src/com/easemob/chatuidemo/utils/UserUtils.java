@@ -84,7 +84,7 @@ public class UserUtils {
      * @param user
      */
 	public static void saveUserInfo(User newUser) {
-		if (newUser == null || newUser.getUsername() == null) {
+		if (newUser == null || newUser.getUsername() == null) { 
 			return;
 		}
 		((DemoHXSDKHelper) HXSDKHelper.getInstance()).saveContact(newUser);

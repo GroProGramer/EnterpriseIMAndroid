@@ -13,6 +13,8 @@
  */
 package com.easemob.chatuidemo;
 
+import wyj.bean.User;
+import wyj.util.UserInfoUtil;
 import android.app.Application;
 import android.content.Context;
 
@@ -30,12 +32,14 @@ public class DemoApplication extends Application {
 	 */
 	public static String currentUserNick = "";
 	public static DemoHXSDKHelper hxSDKHelper = new DemoHXSDKHelper();
+	//private static User userInfo;
 
 	@Override
 	public void onCreate() {
 		super.onCreate();
         applicationContext = this;
         instance = this;
+       // userInfo=UserInfoUtil.getInstance(applicationContext).getUserInfo();
 
         /**
          * this function will initialize the HuanXin SDK
@@ -59,6 +63,7 @@ public class DemoApplication extends Application {
 	}
 
 	public static DemoApplication getInstance() {
+	    
 		return instance;
 	}
  
@@ -107,4 +112,33 @@ public class DemoApplication extends Application {
 		// 先调用sdk logout，在清理app中自己的数据
 	    hxSDKHelper.logout(isGCM,emCallBack);
 	}
+	
+	
+	/*public User getUserInfo(){
+	    return userInfo;
+	}
+	
+	public void saveUserInfo(User user){
+	    UserInfoUtil.getInstance(applicationContext).saveUserInfo(user);
+	    userInfo=getUserInfo();
+	}*/
+	
+	
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

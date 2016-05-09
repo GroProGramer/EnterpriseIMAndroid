@@ -6,6 +6,8 @@
     <color name="btn_login_pressed">#46678d</color>
     <color name="btn_logout_normal">#d33f3f</color>
     <color name="btn_logout_pressed">#DA5A4D</color>
+    <color name="btn_add_friend_normal">#008B00</color>
+    <color name="btn_add_friend_pressed">#32CD32</color>
     <color name="btn_register_normal">#ffffff</color>
     <color name="btn_register_pressed">#00acff</color>
     <color name="common_bottom_bar_normal_bg">#2d2f31</color>
